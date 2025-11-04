@@ -1,9 +1,26 @@
 ---
-
-// Let's see what is possible here and what I am trying to do, lalala!
+const pageTitle = "Home";
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 ---
 
+<html
 <body>
-  <h1>Shreya Dimri</h1>
-  <h1>I am trying okay! I am very new to this!</h1>
+<head>
+		<title>Shreya Dimri</title>
+</head>
+  <h1></h1>
+  <Header />
+  <Footer />
+  <script>
+    const menu = document.querySelector('.menu');
+
+    menu?.addEventListener('click', () => {
+      const isExpanded = menu.getAttribute('aria-expanded') === 'true';
+      menu.setAttribute('aria-expanded', `${!isExpanded}`);
+    });
+  </script>
 </body>
+</html>
+
