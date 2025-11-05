@@ -1,3 +1,3 @@
-This is a personal website I am trying to build with Astro and deploy with Netlify.. wish me luck!
+This is a personal website I am trying to build with Astro and deploy as static build
 
-https://shreyadimri.netlify.app/
+https://shreyadimri.github.io/
