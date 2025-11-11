@@ -1,11 +1,12 @@
+
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.png" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Shreya's Portfolio</title>
+		<title>Shreya Dimri</title>
 	</head>
 	<body>
 		<slot />
@@ -13,13 +14,21 @@
 </html>
 
 <style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-		background-color:  #e7d1f794;
-        font-family: 'Helvetica Neue', sans-serif;
-	    scroll-behavior: smooth;
+:root{
+	--main-bg: #FEFFF0;
+	--lilac: #755985;
+	--yellow: #FFDC58;
+	--pink: #F57371;
+}
+
+html,
+body {
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	background-color: var(--main-bg);
+	font-family: "Space Grotesk Variable", sans-serif;
+	scroll-behavior: smooth;
 	}
 </style>
+

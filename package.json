@@ -9,6 +9,24 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@fontsource-variable/space-grotesk": "^5.2.10",
     "astro": "^5.15.3"
+  },
+  "description": "This is a personal website I am trying to build with Astro and deploy as static build",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shreyadimri/shreyadimri.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shreyadimri/shreyadimri.github.io/issues"
+  },
+  "homepage": "https://github.com/shreyadimri/shreyadimri.github.io#readme",
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.17",
+    "tailwindcss": "^4.1.17"
   }
 }

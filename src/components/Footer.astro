@@ -1,18 +1,36 @@
 ---
-import Social from './Socials.astro';
+import GroguIcon from'../assets/main-illustrations/grogu-S.png';
+import GithubIcon from '../assets/icons/github.png';
+import LinkdinIcon from '../assets/icons/linkdin.png';
+import BlueskyIcon from '../assets/icons/bluesky.png';
+import ResearchgateIcon from '../assets/icons/researchgate.png';
+import {author} from '../data/author.ts'
+
+const socials = [
+  { icon: GithubIcon, link: author.github },
+  { icon: BlueskyIcon, link: author.bluesky },
+	{ icon: LinkdinIcon, link: author.linkedin },
+  { icon: ResearchgateIcon, link: author.researchgate },
+]
 ---
 
-<style>
-  footer {
-    display: flex;
-    gap: 1rem;
-    position: fixed;
-    bottom: 1rem;
-  }
-</style>
 
-<footer>
-  <Social platform="twitter" username="astrodotbuild" />
-  <Social platform="github" username="withastro" />
-  <Social platform="youtube" username="astrodotbuild" />
-</footer> 
+<footer class="border-t-4 px-5 md:px-0 py-10 mt-30">
+  <div class="max-w-5xl mx-auto w-full flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0">
+    <!-- Icon + copyright text goes on the left-->
+    <a href="/" class="flex items-center gap-8 text-lg md:text-xl font-medium">
+      <img src={GroguIcon.src} alt="logo" width="70" />
+      © {author.name} {new Date().getFullYear()}. All rights reserved.
+    </a>
+
+    <!-- Socials go on the right-->
+    <div class="flex gap-6 md:gap-10 items-center">
+      {socials.map(item => (
+        <a href={item.link} target="_blank" class="transition-all duration-200 hover:translate-y-[2px]">
+          <img src={item.icon.src} alt="social icon" width="65" class="transition-all duration-100 hover:opacity-70" />
+        </a>
+      ))}
+    </div>
+
+  </div>
+</footer>
