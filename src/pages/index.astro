@@ -5,6 +5,7 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Button from '../components/Button.astro';
+import About from '../components/About.astro';
 import sdMain from '../assets/images/SD-Main.png';
 import CirclePointer from '../assets/icons/circle-pointer.png';
 import GroguHello from '../assets/main-illustrations/grogu-hello.png';
@@ -13,19 +14,31 @@ import {author} from '../data/author.ts'
 
 <Layout>
   <Header />
+   <!-- Hello and my image -->
   <section class="pb-20 relative">
-  <div class="max-w-4xl mx-auto p-4 pt-20 md:pt-30">
+  <div class="max-w-5xl mx-auto p-4 pt-20 md:pt-30">
       <div class="grid grid-cols-1 md:grid-cols-[60%_50%] items-center">
         <div class="flex flex-col gap-4 pr-0 md:pr-20">
-          <h1 class="text-5xl font-medium">
-            <img src={GroguHello.src} alt="logo" width="200" /> 
-              <span>Good to see<br>you</span>
-              <span class="relative">
-                <span class="absolute bg-[var(--yellow)] w-full h-[50%] left-0 bottom-0 z-1"></span>
-                <span class="relative z-5">here!</span>
-              </span>
+          <h1 class="text-4xl font-medium">
+            <img src={GroguHello.src} alt="logo" width="120" /> 
+              <span>Good to see you here!</span>
           </h1>
-          <p class="text-xl">Researcher in Behavioural Ecology and Evolution. I focus on Evidence synthesis, including Systematic reviews and Meta-analysis.</p>
+          <p class="text-xl">
+            Researcher in 
+            <span class="relative inline-block mx-1">
+              <span class="absolute left-0 bottom-0 w-full h-[55%] bg-[var(--yellow)] z-0"></span>
+              <span class="relative z-10">Behavioural Ecology</span>
+            </span>
+            and Evolution with focus on Evidence synthesis — Systematic reviews and 
+            <span class="relative inline-block mx-1">
+              <span class="absolute left-0 bottom-0 w-full h-[55%] bg-[var(--yellow)] z-0"></span>
+              <span class="relative z-10">Meta-analysis.</span>
+            </span>
+            <span class="relative inline-block ml-1">
+              <span class="absolute left-0 bottom-0 w-full h-[55%] bg-[var(--yellow)] z-0"></span>
+              <span class="relative z-10">Open Sciencer!</span>
+            </span>
+          </p>
           <div class="flex mt-5">
              <Button text="See my Current Projects" link="/projects" target="_self" />
           </div>
@@ -47,15 +60,16 @@ import {author} from '../data/author.ts'
       </div>
     </div>
   </div> 
+  <header class="relative border-b-4 p-3 overflow-hidden"></header>
+ </section>
+
+ <section class="pb-20 relative">
+      <div class="max-w-5xl mx-auto p-5 pt-20 md:pt-30">
+         <About/>
+            <div class="flex mt-15">
+             <Button text="Detailed CV" link="/projects" target="_self" />
+            </div>
+      </div>
   </section>
-
-
-  <style>
-    #me{
-     background-image: url('https://images.pexels.com/photos/1858175/pexels-photo-1858175.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
-     background-position: top;
-     background-size: cover;
-    }
-   </style> 
   <Footer/>
 </Layout>

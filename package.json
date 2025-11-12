@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@fontsource-variable/space-grotesk": "^5.2.10",
-    "astro": "^5.15.3"
+    "astro": "^5.15.3",
+    "pdfjs": "^2.5.4"
   },
   "description": "This is a personal website I am trying to build with Astro and deploy as static build",
   "main": "index.js",

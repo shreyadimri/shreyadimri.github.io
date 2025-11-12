@@ -5,7 +5,6 @@ import FlowerIcon from '../assets//main-illustrations/flower.png';
 import {author} from '../data/author.ts'
 
 const links = [
-    { name: 'About Me', path: '/about/', target: '_self' },
     { name: 'Publications', path: '/publication/', target: '_self' },
     { name: 'Projects', path: '/projects/', target: '_self' },
     { name:  'Art', path: '/art/', target: '_self' },
@@ -16,8 +15,8 @@ const links = [
 const { pathname } = Astro.url
 ---
 
-<header class="relative border-b-3 p-7 overflow-hidden">
-      <div class="flex border-3 border-[var(--lilac)] bg-white max-w-[600px] max-w-[1100px] mx-auto relative z-10 w-full">
+<header class="relative border-b-4 p-7 overflow-hidden">
+      <div class="flex border-3 border-[var(--lilac)] w-full bg-white max-w-[600px] max-w-[1100px] mx-auto relative z-10">
         <!-- top boxes -->
         <div class="size-2 bg-white border-3 border-[var(--lilac)] absolute -top-2 -right-2"></div>
         <div class="size-2 bg-white border-3 border-[var(--lilac)] absolute -top-2 -left-2"></div>
@@ -43,7 +42,7 @@ const { pathname } = Astro.url
             </a>
             <ul class="hidden md:flex ml-auto items-center">
                 {links.map(item => ( 
-                    <li class="border-l-2 border-[var(--lilac)] p-5 py-8">
+                    <li class="border-l-2 border-[var(--lilac)] p-4 py-4">
                         <a href={item.path} target={item.target}                                
                         class="whitespace-nowrap relative flex items-center before:content-[''] before:absolute before:left-0 before:bottom-1 before:h-[8px] before:w-0 before:bg-[var(--pink)] before:transition-all before:duration-600 hover:before:w-full">
                             <span class="relative z-5">{item.name} {pathname == item.path ? 
