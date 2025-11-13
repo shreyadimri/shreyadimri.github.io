@@ -1,0 +1,20 @@
+
+---
+import Flipbook from "../components/Flipbook.astro";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>PDF Flipbook</title>
+  </head>
+  <body>
+    <h1>Hope you enjoy this little piece</h1>
+
+    <Flipbook
+      fileUrl="/Imprint2018.pdf"   <!-- put this file in /public -->
+      width={800}
+      height={600}
+    />
+  </body>
+</html>

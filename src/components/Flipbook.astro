@@ -1,0 +1,17 @@
+---
+import PdfFlipbook from "./PDFFlipbook";
+
+const {
+  width = 600,
+  height = 800,
+  className = "",
+} = Astro.props;
+---
+
+<PdfFlipbook
+  client:only="react"
+  fileUrl="/magazines/Imprint2018.pdf"
+  width={width}
+  height={height}
+  className={className}
+/>
