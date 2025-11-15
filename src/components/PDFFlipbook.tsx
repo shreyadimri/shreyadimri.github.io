@@ -1,8 +1,8 @@
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import HTMLFlipBook from "react-pageflip";
 import { Document, Page, pdfjs } from "react-pdf";
 
-// ✅ Worker config for Vite/Astro
+// Worker config for Vite/Astro
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
   import.meta.url
@@ -13,40 +13,264 @@ interface PdfFlipbookProps {
   width?: number;
   height?: number;
   className?: string;
+  triggerLabel?: string;
 }
 
-// ✅ Icon URLs (adjust path if your file structure differs)
-const backIcon = new URL("../assets/icons/back.png", import.meta.url).href;
-const nextIcon = new URL("../assets/icons/next.png", import.meta.url).href;
+const BASE_DESKTOP_BREAKPOINT = 768;
+const DESKTOP_GUTTER = 100;
+const MIN_DESKTOP_PAGE_WIDTH = 360;
+const DIALOG_HORIZONTAL_PADDING = 20;
+const DIALOG_VERTICAL_PADDING = 40;
+
+/** Modern circular glass arrow button — smaller + #fffbc7 */
+const ModernArrowButton = ({
+  disabled,
+  onClick,
+  direction,
+}: {
+  disabled?: boolean;
+  onClick?: () => void;
+  direction: "left" | "right";
+}) => {
+  const arrow =
+    direction === "left" ? (
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#fffbc7"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <polyline points="15 18 9 12 15 6" />
+      </svg>
+    ) : (
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#fffbc7"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <polyline points="9 18 15 12 9 6" />
+      </svg>
+    );
+
+  return (
+    <button
+      disabled={disabled}
+      onClick={onClick}
+      style={{
+        width: "32px",
+        height: "32px",
+        borderRadius: "50%",
+        border: "1px solid rgba(255,251,199,0.6)", // #fffbc7
+        background: disabled
+          ? "rgba(255,251,199,0.15)"
+          : "rgba(255,251,199,0.25)",
+        backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        cursor: disabled ? "default" : "pointer",
+        transition: "0.25s ease",
+        boxShadow: disabled
+          ? "none"
+          : "0 3px 12px rgba(0, 0, 0, 0.25)",
+      }}
+      onMouseEnter={(e) => {
+        if (disabled) return;
+        e.currentTarget.style.background = "rgba(255,251,199,0.35)";
+      }}
+      onMouseLeave={(e) => {
+        if (disabled) return;
+        e.currentTarget.style.background = "rgba(255,251,199,0.25)";
+      }}
+    >
+      {arrow}
+    </button>
+  );
+};
 
 export default function PdfFlipbook({
   fileUrl,
   width = 600,
   height = 850,
   className = "",
+  triggerLabel = "Open flipbook",
 }: PdfFlipbookProps) {
+  const [isOpen, setIsOpen] = useState(false);
   const [numPages, setNumPages] = useState<number | null>(null);
   const [error, setError] = useState<Error | null>(null);
-  const [isClient, setIsClient] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [viewport, setViewport] = useState(() => ({
+    width:
+      typeof window !== "undefined"
+        ? window.innerWidth
+        : width * 2 + DESKTOP_GUTTER,
+    height:
+      typeof window !== "undefined"
+        ? window.innerHeight
+        : height + DIALOG_VERTICAL_PADDING,
+  }));
+  const [containerSize, setContainerSize] = useState<{
+    width: number | null;
+    height: number | null;
+  }>({ width: null, height: null });
 
   const flipBookRef = useRef<any>(null);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
 
-  // Client + mobile detection
+  const updateViewport = () => {
+    if (typeof window === "undefined") return;
+    setViewport({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  };
+
   useEffect(() => {
-    setIsClient(true);
+    updateViewport();
+    window.addEventListener("resize", updateViewport);
+    return () => window.removeEventListener("resize", updateViewport);
+  }, []);
 
-    const updateIsMobile = () => {
-      if (typeof window !== "undefined") {
-        setIsMobile(window.innerWidth <= 768);
-      }
+  // Close modal with Escape
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsOpen(false);
     };
 
-    updateIsMobile();
-    window.addEventListener("resize", updateIsMobile);
-    return () => window.removeEventListener("resize", updateIsMobile);
-  }, []);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
+
+  // Prevent background scroll when modal is open
+  useEffect(() => {
+    if (!isOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [isOpen]);
+
+  // Reset current page when closing
+  useEffect(() => {
+    if (!isOpen) {
+      setCurrentPage(1);
+    }
+  }, [isOpen]);
+
+  // Measure the modal's inner content area when open
+  useEffect(() => {
+    if (!isOpen) return;
+    const element = dialogRef.current;
+    if (!element) return;
+
+    const updateSize = () => {
+      const rect = element.getBoundingClientRect();
+      setContainerSize({
+        width: rect.width,
+        height: rect.height,
+      });
+    };
+
+    const resizeObserver = new ResizeObserver(() => updateSize());
+    resizeObserver.observe(element);
+    updateSize();
+
+    return () => resizeObserver.disconnect();
+  }, [isOpen]);
+
+  const dialogWidthPx = Math.max(320, viewport.width * 0.9);
+  const dialogHeightPx = Math.max(320, viewport.height * 0.9);
+
+  const fallbackAvailableWidth = Math.max(
+    0,
+    dialogWidthPx - DIALOG_HORIZONTAL_PADDING
+  );
+  const fallbackAvailableHeight = Math.max(
+    0,
+    dialogHeightPx - DIALOG_VERTICAL_PADDING
+  );
+
+  const measuredAvailableWidth =
+    containerSize.width !== null
+      ? Math.max(0, containerSize.width - DIALOG_HORIZONTAL_PADDING)
+      : null;
+  const measuredAvailableHeight =
+    containerSize.height !== null
+      ? Math.max(0, containerSize.height - DIALOG_VERTICAL_PADDING)
+      : null;
+
+  const availableWidth =
+    measuredAvailableWidth !== null
+      ? measuredAvailableWidth
+      : fallbackAvailableWidth;
+  const availableHeight =
+    measuredAvailableHeight !== null
+      ? measuredAvailableHeight
+      : fallbackAvailableHeight;
+
+  const desktopThreshold = Math.max(
+    BASE_DESKTOP_BREAKPOINT,
+    MIN_DESKTOP_PAGE_WIDTH * 2 + DESKTOP_GUTTER
+  );
+  const isDesktopLayout = availableWidth >= desktopThreshold;
+
+  const aspectRatio = width > 0 ? height / width : 1.5;
+  const fitWithinBounds = (
+    maxWidth: number,
+    maxHeight: number
+  ): { width: number; height: number } => {
+    let nextWidth = maxWidth;
+    let nextHeight = nextWidth * aspectRatio;
+
+    if (nextHeight > maxHeight && maxHeight > 0) {
+      nextHeight = maxHeight;
+      nextWidth = nextHeight / aspectRatio;
+    }
+
+    return {
+      width: Math.max(1, Math.floor(nextWidth)),
+      height: Math.max(1, Math.floor(nextHeight)),
+    };
+  };
+
+  const mobileBounds = fitWithinBounds(
+    Math.min(width, availableWidth),
+    availableHeight
+  );
+
+  const rawPerPageWidth = Math.floor((availableWidth - DESKTOP_GUTTER) / 2);
+  const desktopBounds =
+    isDesktopLayout && rawPerPageWidth > 0
+      ? fitWithinBounds(Math.min(width, rawPerPageWidth), availableHeight)
+      : { width: 0, height: 0 };
+
+  const mobilePageWidth = mobileBounds.width;
+  const mobilePageHeight = mobileBounds.height;
+  const desktopPageWidth = desktopBounds.width;
+  const desktopPageHeight = desktopBounds.height;
+
+  // Keep the flipbook canvas in sync with computed dimensions
+  useEffect(() => {
+    if (!isOpen || !isDesktopLayout) return;
+    const api = flipBookRef.current?.pageFlip?.();
+    api?.update({
+      width: desktopPageWidth,
+      height: desktopPageHeight,
+    });
+  }, [isOpen, isDesktopLayout, desktopPageWidth, desktopPageHeight]);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
@@ -61,127 +285,93 @@ export default function PdfFlipbook({
 
   const handlePrev = () => {
     if (!numPages) return;
-
-    if (isMobile) {
+    if (!isDesktopLayout) {
       setCurrentPage((prev) => Math.max(1, prev - 1));
-    } else {
-      const pageFlip = flipBookRef.current?.pageFlip?.();
-      pageFlip?.flipPrev?.();
+      return;
     }
+    const pageFlip = flipBookRef.current?.pageFlip?.();
+    pageFlip?.flipPrev?.();
   };
 
   const handleNext = () => {
     if (!numPages) return;
-
-    if (isMobile) {
+    if (!isDesktopLayout) {
       setCurrentPage((prev) => Math.min(numPages, prev + 1));
-    } else {
-      const pageFlip = flipBookRef.current?.pageFlip?.();
-      pageFlip?.flipNext?.();
+      return;
     }
+    const pageFlip = flipBookRef.current?.pageFlip?.();
+    pageFlip?.flipNext?.();
   };
 
   const handleFlip = (e: any) => {
-    // e.data is zero-based page index
-    if (!isMobile && typeof e?.data === "number") {
+    if (isDesktopLayout && typeof e?.data === "number") {
       setCurrentPage(e.data + 1);
     }
   };
 
-  if (!isClient) {
-    return <div className={className}>Loading flipbook…</div>;
-  }
+  const closeModal = () => setIsOpen(false);
 
-  if (error) {
+  const renderPdfContent = () => {
+    if (error) {
+      return (
+        <div style={{ color: "#fff", maxWidth: "80%", textAlign: "center" }}>
+          <p>Failed to load PDF.</p>
+          <pre style={{ whiteSpace: "pre-wrap", fontSize: "0.8rem" }}>
+            {error.message}
+          </pre>
+          <p>File URL: {fileUrl}</p>
+        </div>
+      );
+    }
+
     return (
-      <div className={className}>
-        <p>Failed to load PDF.</p>
-        <pre style={{ whiteSpace: "pre-wrap", fontSize: "0.8rem" }}>
-          {error.message}
-        </pre>
-        <p>File URL: {fileUrl}</p>
-      </div>
-    );
-  }
-
-  const pageWidth = width;
-  const pageHeight = height;
-
-  return (
-    <div className={className}>
       <Document
         file={fileUrl}
         onLoadSuccess={onDocumentLoadSuccess}
         onLoadError={onDocumentLoadError}
+        loading={<div style={{ color: "#fff" }}>Loading flipbook…</div>}
+        error={
+          <div style={{ color: "#fff" }}>Unable to display this document.</div>
+        }
       >
         {numPages && (
           <>
-            {/* Top navigation (works on both mobile & desktop) */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: "1rem",
-                marginBottom: "0.75rem",
-              }}
-            >
-              <button
-                onClick={handlePrev}
+            {/* Top navigation (mobile + desktop) */}
+            <div style={styles.nav}>
+              <ModernArrowButton
+                direction="left"
                 disabled={currentPage <= 1}
+                onClick={handlePrev}
+              />
+
+              <span
                 style={{
-                  background: "transparent",
-                  border: "none",
-                  cursor: currentPage <= 1 ? "default" : "pointer",
-                  opacity: currentPage <= 1 ? 0.3 : 1,
-                  padding: 0,
+                  color: "#fffbc7",
+                  fontFamily: '"Space Grotesk Variable", system-ui, sans-serif',
+                  fontWeight: 300,
+                  letterSpacing: "0.01em",
+                  fontSize: "0.85rem",
                 }}
               >
-                <img
-                  src={backIcon}
-                  alt="Previous page"
-                  style={{ width: 32, height: "auto", display: "block" }}
-                />
-              </button>
-
-              <span>
                 Page {currentPage} / {numPages}
               </span>
 
-              <button
-                onClick={handleNext}
+              <ModernArrowButton
+                direction="right"
                 disabled={currentPage >= numPages}
-                style={{
-                  background: "transparent",
-                  border: "none",
-                  cursor: currentPage >= numPages ? "default" : "pointer",
-                  opacity: currentPage >= numPages ? 0.3 : 1,
-                  padding: 0,
-                }}
-              >
-                <img
-                  src={nextIcon}
-                  alt="Next page"
-                  style={{ width: 32, height: "auto", display: "block" }}
-                />
-              </button>
+                onClick={handleNext}
+              />
             </div>
 
-            {isMobile ? (
-              // 📱 MOBILE: one static page, no flip animation
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+            {/* Mobile: single page, no flip animation */}
+            {!isDesktopLayout ? (
+              <div style={styles.mobileWrapper}>
                 <div
                   className="page"
                   style={{
-                    width: pageWidth,
-                    height: pageHeight,
-                    background: "white",
+                    width: mobilePageWidth,
+                    height: mobilePageHeight,
+                    background: "#fffbc7",
                     overflow: "hidden",
                     display: "flex",
                     justifyContent: "center",
@@ -190,46 +380,44 @@ export default function PdfFlipbook({
                 >
                   <Page
                     pageNumber={currentPage}
-                    height={pageHeight} // match container height
+                    height={mobilePageHeight}
                     renderTextLayer={false}
                     renderAnnotationLayer={false}
                   />
                 </div>
               </div>
             ) : (
-              // 🖥 DESKTOP: full flipbook with side arrows
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  gap: "1rem",
-                }}
-              >
-                <button
-                  onClick={handlePrev}
-                  style={{
-                    background: "transparent",
-                    border: "none",
-                    cursor: "pointer",
-                    padding: 0,
-                  }}
-                >
-                  <img
-                    src={backIcon}
-                    alt="Previous page"
-                    style={{ width: 40, height: "auto", display: "block" }}
-                  />
-                </button>
+              // Desktop: flipbook with side arrows
+              <div style={styles.desktopWrapper}>
+                <ModernArrowButton direction="left" onClick={handlePrev} />
 
                 <HTMLFlipBook
                   ref={flipBookRef}
-                  width={pageWidth}
-                  height={pageHeight}
+                  width={desktopPageWidth}
+                  height={desktopPageHeight}
+                  // IProps fields to satisfy TypeScript
+                  className=""
+                  style={{}}
+                  startPage={0}
+                  startZIndex={0}
+                  minWidth={0}
+                  maxWidth={2000}
+                  minHeight={0}
+                  maxHeight={3000}
+                  maxShadowOpacity={0.5}
+                  flippingTime={400}
+                  usePortrait={false}
                   size="fixed"
-                  usePortrait={true}
-                  drawShadow={true}
+                  autoSize={true}
                   showCover={true}
+                  mobileScrollSupport={true}
+                  clickEventForward={true}
+                  useMouseEvents={true}
+                  swipeDistance={15}
+                  showPageCorners={true}
+                  disableFlipByClick={false}
+                  drawShadow={true}
+                  renderOnlyPageLengthChange={false}
                   onFlip={handleFlip}
                 >
                   {Array.from({ length: numPages }, (_, i) => (
@@ -237,9 +425,9 @@ export default function PdfFlipbook({
                       key={i}
                       className="page"
                       style={{
-                        width: pageWidth,
-                        height: pageHeight,
-                        background: "white",
+                        width: desktopPageWidth,
+                        height: desktopPageHeight,
+                        background: "#fff",
                         overflow: "hidden",
                         display: "flex",
                         justifyContent: "center",
@@ -248,7 +436,7 @@ export default function PdfFlipbook({
                     >
                       <Page
                         pageNumber={i + 1}
-                        height={pageHeight} // ensure page bottom matches flip edge
+                        height={desktopPageHeight}
                         renderTextLayer={false}
                         renderAnnotationLayer={false}
                       />
@@ -256,26 +444,129 @@ export default function PdfFlipbook({
                   ))}
                 </HTMLFlipBook>
 
-                <button
-                  onClick={handleNext}
-                  style={{
-                    background: "transparent",
-                    border: "none",
-                    cursor: "pointer",
-                    padding: 0,
-                  }}
-                >
-                  <img
-                    src={nextIcon}
-                    alt="Next page"
-                    style={{ width: 40, height: "auto", display: "block" }}
-                  />
-                </button>
+                <ModernArrowButton direction="right" onClick={handleNext} />
               </div>
             )}
           </>
         )}
       </Document>
+    );
+  };
+
+  const dialogStyle = {
+    ...styles.dialog,
+    width: `${dialogWidthPx}px`,
+    height: `${dialogHeightPx}px`,
+  };
+
+  return (
+    <div className={className}>
+      <button
+        type="button"
+        style={styles.trigger}
+        onClick={() => setIsOpen(true)}
+      >
+        {triggerLabel}
+      </button>
+
+      {isOpen && (
+        <div style={styles.modal} role="dialog" aria-modal="true">
+          <div style={styles.backdrop} onClick={closeModal}></div>
+          <div style={dialogStyle} ref={dialogRef}>
+            <button
+              type="button"
+              style={styles.close}
+              aria-label="Close flipbook"
+              onClick={closeModal}
+            >
+              ✕
+            </button>
+
+            <div style={styles.inner}>{renderPdfContent()}</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
+const styles = {
+  trigger: {
+    background: "#f1b1b0",
+    color: "#000",
+    fontSize: "1rem",
+    fontWeight: 500,
+    height: "48px",
+    padding: "0 24px",
+    borderRadius: "9999px",
+    border: "3px solid #000",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    transition: "all 0.25s ease",
+  },
+  modal: {
+    position: "fixed" as const,
+    inset: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1000,
+  },
+  backdrop: {
+    position: "absolute" as const,
+    inset: 0,
+    background: "rgba(0, 0, 0, 0.6)",
+  },
+  dialog: {
+    position: "relative" as const,
+    background: "#211925ff",
+    borderRadius: "32px",
+    padding: "0.75rem",
+    boxShadow: "0 20px 40px rgba(0, 0, 0, 0.5)",
+    display: "flex",
+    flexDirection: "column" as const,
+  },
+  close: {
+    position: "absolute" as const,
+    top: "1rem",
+    right: "1rem",
+    background: "transparent",
+    border: "none",
+    color: "#fffbc7",
+    fontSize: "1.1rem",
+    cursor: "pointer",
+  },
+  inner: {
+    flex: 1,
+    marginTop: "1.5rem",
+    display: "flex",
+    flexDirection: "column" as const,
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
+    width: "100%",
+    height: "100%",
+  },
+  nav: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "1rem",
+    marginBottom: "0.75rem",
+  },
+  mobileWrapper: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+  },
+  desktopWrapper: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "1rem",
+    width: "100%",
+  },
+};

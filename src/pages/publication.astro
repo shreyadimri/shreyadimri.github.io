@@ -1,20 +1,29 @@
-
 ---
+import "../styles/global.css";
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
 import Flipbook from "../components/Flipbook.astro";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>PDF Flipbook</title>
-  </head>
-  <body>
-    <h1>Hope you enjoy this little piece</h1>
-
-    <Flipbook
-      fileUrl="/Imprint2018.pdf"   <!-- put this file in /public -->
-      width={800}
-      height={600}
-    />
-  </body>
-</html>
+<Layout>
+  <Header />
+  <section class="pb-20 relative">
+    <div class="max-w-5xl mx-auto p-4 pt-20 md:pt-30">
+      <div class="flex flex-col gap-4 pr-0 md:pr-20">
+        <h1 class="text-4xl font-medium">
+          <span>Hope you enjoy this little piece</span>
+        </h1>
+      </div>
+      <Flipbook
+        fileUrl="/magazines/Imprint2018.pdf"
+        triggerLabel="Read Imprint 2018"
+      />
+      <Flipbook
+        fileUrl="/magazines/Imprint2017.pdf"
+        triggerLabel="Read Imprint 2017"
+      />
+    </div>
+  </section>
+</Layout>
+<Footer />

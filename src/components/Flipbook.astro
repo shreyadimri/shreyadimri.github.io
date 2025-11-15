@@ -2,16 +2,19 @@
 import PdfFlipbook from "./PDFFlipbook";
 
 const {
+  fileUrl,
   width = 600,
-  height = 800,
+  height = 850,
   className = "",
+  triggerLabel = "Open flipbook",
 } = Astro.props;
 ---
 
 <PdfFlipbook
   client:only="react"
-  fileUrl="/magazines/Imprint2018.pdf"
+  fileUrl={fileUrl}
   width={width}
   height={height}
   className={className}
+  triggerLabel={triggerLabel}
 />
