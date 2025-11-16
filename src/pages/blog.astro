@@ -1,30 +1,38 @@
 ---
-import '../styles/global.css';
-import Layout from '../layouts/Layout.astro';
+import '../styles/global.css'
+import Layout from "../layouts/Layout.astro";
+
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+
+const allPosts = Object.values(import.meta.glob('./blogs/*.md', { eager: true }));
 ---
+
 <Layout>
-  <body>
- <Header/>
-    <h1>Blog Posts</h1>
-    <p>This space is my little space on the internet to share with you all what all I have been tinkering with. 
-      If you end up reading some of it, please do let me know. A thumbs up or even down would be great for me to 
-      know that!</p>
-    <ul>
-      <li><a href="/blogs/post-1/">Post 1</a></li>
-      <li><a href="/blogs/post-2/">Post 2</a></li>
-      <li><a href="/blogs/post-3/">Post 3</a></li>
-    </ul>
+    <Header />
+
+    <section class="py-40">
+        <div class="max-w-3xl mx-auto">
+          <div class="justify-left mb-15">
+            <h1 class="title text-5xl font-black">Blog posts</h1>
+          </div>
+          <div class="p-3">
+            {allPosts.map(({url, frontmatter, rawContent }: any) => 
+               <a href={url} class="flex gap-3 items-center bg-white p-5 border-2 mb-5 transition-all duration-200 hover:shadow-[4px_4px_0px_rgba(0,0,0,0.3)]">
+                <div>
+                  <div class="w-[200px] h-[130px] overflow-hidden border-2">
+                  <img src={frontmatter?.image?.url} alt="" class="w-full h-full object-cover" />
+                </div>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <h1 class="line-clamp-2 text-xl font-bold">{frontmatter.title}</h1>
+                    <div class="line-clamp-2" set:html={rawContent}></div>
+                </div>
+               </a>
+             )}
+          </div>
+        </div>
+    </section>
+
     <Footer />
-     <script>
-    const menu = document.querySelector('.menu');
-
-    menu.addEventListener('click', () => {
-      const isExpanded = menu.getAttribute('aria-expanded') === 'true';
-      menu.setAttribute('aria-expanded', !isExpanded);
-    });
-  </script>
-  </body>
 </Layout>
-

@@ -1,1 +1,38 @@
-# Here are my current projects
+---
+import '../styles/global.css'
+import Layout from "../layouts/Layout.astro";
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const allProjects = Object.values(import.meta.glob('./projects/*.md', { eager: true }));
+---
+
+<Layout>
+    <Header />
+
+    <section class="py-40">
+        <div class="max-w-3xl mx-auto">
+          <div class="justify-left mb-15">
+            <h1 class="title text-5xl font-black">Projects</h1>
+          </div>
+          <div class="p-3">
+            {allProjects.map(({url, frontmatter, rawContent }: any) => 
+               <a href={url} class="flex gap-3 items-center bg-white p-5 border-2 mb-5 transition-all duration-200 hover:shadow-[4px_4px_0px_rgba(0,0,0,0.3)]">
+                <div>
+                  <div class="w-[200px] h-[130px] overflow-hidden border-2">
+                  <img src={frontmatter?.image?.url} alt="" class="w-full h-full object-cover" />
+                </div>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <h1 class="line-clamp-2 text-xl font-bold">{frontmatter.title}</h1>
+                    <div class="line-clamp-2" set:html={rawContent}></div>
+                </div>
+               </a>
+             )}
+          </div>
+        </div>
+    </section>
+
+    <Footer />
+</Layout>

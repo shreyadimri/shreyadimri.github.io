@@ -530,8 +530,8 @@ const styles = {
   },
   close: {
     position: "absolute" as const,
-    top: "1rem",
-    right: "1rem",
+    top: "1.2rem",
+    right: "2rem",
     background: "transparent",
     border: "none",
     color: "#fffbc7",

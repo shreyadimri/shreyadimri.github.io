@@ -1,0 +1,155 @@
+---
+const pageTitle = "Art";
+import "../styles/global.css";
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Flipbook from "../components/Flipbook.astro";
+---
+
+<Layout>
+  <Header />
+
+  <!-- Intro -->
+  <section class="pb-10 relative">
+    <div class="max-w-5xl mx-auto p-5 pt-20 md:pt-20">
+      <h1 class="text-5xl font-black mb-5">Art</h1>
+      <p class="text-xl font-medium text-slate-800">
+        I love to scribble, something you've probably realised by now. All these
+        little doodles that appear on this website and icons that look a little
+        whacky are scribbled by me.
+        <br /><br />
+        I enjoy mixing a bit of art into my science and a little science into my
+        art. I am no artist, but I do appreciate things that look beautiful and spark
+        some joy. This space is a collection of such things.
+      </p>
+    </div>
+  </section>
+
+  <!-- Magazines -->
+  <section class="pb-20 relative">
+    <div class="max-w-5xl mx-auto p-5 pt-10 md:pt-10">
+      <h2 class="text-4xl font-semibold mb-8">Magazines</h2>
+      <p class="mb-8 max-w-5xl">
+        <span class="font-semibold">Imprint</span> is the annual magazine of the
+        Department of Zoology at St. Xavier's College, Mumbai, created under the
+        Xavier’s Zoology Association to make zoology accessible, engaging, and visually
+        compelling. Over the years, the magazine has explored themes such as human–animal
+        interactions, migration, climate change, and animal communication.
+        <br /><br />
+        These editions are especially close to my heart as they were my first serious
+        attempt at science communication and design. My journey with Imprint spans
+        two issues, but the magazine continues to be published by the department
+        every year.
+        <br />
+        <a
+          href="https://sites.google.com/xaviers.edu/xavierszoology/imprint"
+          target="_blank"
+          class="font-semibold text-slate-900 underline underline-offset-4"
+        >
+          You can check them out as well!
+        </a>
+        <br /><br />
+        I hope you enjoy flipping through these as much as I enjoyed making them
+        several years ago!
+      </p>
+
+      <div class="space-y-16">
+        <!-- IMPRINT 2018 -->
+        <div class="space-y-8">
+          <h3 class="text-3xl font-semibold">
+            Imprint 2018: A Symphony of Species
+          </h3>
+
+          <p class="text-slate-700 max-w-5xl">
+            This issue invited readers into the fascinating world of animal
+            communication, exploring how signals evolve and shape interactions
+            across species. As
+            <span class="font-semibold">Student Editor-in-Chief</span> for this edition,
+            together with an amazing editorial team, I guided the theme, curated
+            content, and contributed to the magazine’s design. It was a fulfilling
+            experience to take a magazine from concept to print—holding the hard
+            copy in my hands was truly rewarding!
+          </p>
+
+          <!-- Read button -->
+          <div class="mt-4">
+            <Flipbook
+              fileUrl="/magazines/Imprint2018.pdf"
+              triggerLabel="Read Imprint 2018"
+            />
+          </div>
+
+          <!-- Magazine overview -->
+          <div class="mt-8 inline-block border-2 rounded-xl overflow-hidden">
+            <div class="flex">
+              <img
+                src="/magazines/Imprint2018-cover.jpg"
+                alt="Imprint 2018 Cover"
+                class="w-65 md:w-68 lg:w-78 object-cover"
+              />
+              <img
+                src="/magazines/Imprint2018-page1.jpg"
+                alt="Imprint 2018 Page 1"
+                class="w-65 md:w-68 lg:w-78 object-cover"
+              />
+              <img
+                src="/magazines/Imprint2018-page2.jpg"
+                alt="Imprint 2018 Page 2"
+                class="w-65 md:w-68 lg:w-78 object-cover"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- IMPRINT 2017 -->
+        <div class="space-y-8">
+          <h3 class="text-3xl font-semibold">
+            Imprint 2017: Of Plato and Platypus
+          </h3>
+
+          <p class="text-slate-700 max-w-5xl">
+            This issue explored the complex and often misunderstood
+            relationships between humans and animals, in both synchrony and
+            conflict. I worked on
+            <span class="font-semibold">this edition as a Design Editor</span>,
+            contributing to the visual language of the magazine and supporting
+            the editorial process. It was a delight to work on this issue and to
+            learn tools like InDesign along the way!
+          </p>
+
+          <!-- Read button -->
+          <div class="mt-4">
+            <Flipbook
+              fileUrl="/magazines/Imprint2017.pdf"
+              triggerLabel="Read Imprint 2017"
+            />
+          </div>
+
+          <!-- Magazine overview -->
+          <div class="mt-8 inline-block border-2 rounded-xl overflow-hidden">
+            <div class="flex">
+              <img
+                src="/magazines/Imprint2017-cover.jpg"
+                alt="Imprint 2017 Cover"
+                class="w-65 md:w-68 lg:w-78 object-cover"
+              />
+              <img
+                src="/magazines/Imprint2017-page1.jpg"
+                alt="Imprint 2017 Page 1"
+                class="w-65 md:w-68 lg:w-78 object-cover"
+              />
+              <img
+                src="/magazines/Imprint2017-page2.jpg"
+                alt="Imprint 2017 Page 2"
+                class="w-65 md:w-68 lg:w-78 object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>

@@ -5,8 +5,9 @@ import FlowerIcon from '../assets//main-illustrations/flower.png';
 import {author} from '../data/author.ts'
 
 const links = [
-    { name: 'Publications', path: '/publication/', target: '_self' },
     { name: 'Projects', path: '/projects/', target: '_self' },
+    { name: 'Publications', path: '/publication/', target: '_self' },
+    { name: 'Presentations & Workshops', path: '/engagements/', target: '_self' },
     { name:  'Art', path: '/art/', target: '_self' },
     { name: 'Blog', path: '/blog/', target: '_self' },
     { name: 'Contact', path: '/contact/', target: '_self' },
@@ -15,7 +16,7 @@ const links = [
 const { pathname } = Astro.url
 ---
 
-<header class="relative border-b-4 p-7 overflow-hidden">
+<header class="relative border-b-3 p-7 overflow-hidden">
       <div class="flex border-3 border-[var(--lilac)] w-full bg-white max-w-[600px] max-w-[1100px] mx-auto relative z-10">
         <!-- top boxes -->
         <div class="size-2 bg-white border-3 border-[var(--lilac)] absolute -top-2 -right-2"></div>
