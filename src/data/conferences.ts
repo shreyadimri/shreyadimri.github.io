@@ -1,5 +1,12 @@
 // src/data/conferences.ts
 
+import Behaviour2025Image from "../assets/images/behaviour2025-SD.png";
+import DZGGraduateMeet2023Image from "../assets/images/DZG-GraduateMeet2023-people.jpg";
+
+import Behaviour2025TalkPdf from "../assets/conferences/behaviour2025-talk.pdf";
+import Nc3Retreat2023PosterPdf from "../assets/conferences/nc3-retreat2023-poster.pdf";
+import Nc3Retreat2022PosterPdf from "../assets/conferences/nc3-retreat2022-poster.pdf";
+
 export type ConferenceType = "talk" | "poster";
 
 export interface Conference {
@@ -11,11 +18,11 @@ export interface Conference {
   type: ConferenceType;
   date: Date;
   location?: string;
-  presenterImage?: string;  
+  presenterImage?: string;
   file: {
-    src: string; // path to image or pdf (in /assets/conferences/)
+    src: string; // built URL to image or pdf
     kind: "image" | "pdf";
-    label: string; // button label e.g. "View slides" / "View poster"
+    label: string; // e.g. "View slides" / "View poster"
   };
 }
 
@@ -31,27 +38,30 @@ export const conferences: Conference[] = [
     type: "talk",
     date: new Date("2025-08-30"),
     location: "Kolkata, India",
-    presenterImage: "/src/assets/images/behaviour2025-SD.png",
+    presenterImage: Behaviour2025Image.src,
     file: {
-      src: "/src/assets/conferences/behaviour2025-talk.pdf",
+      src: Behaviour2025TalkPdf,
       kind: "pdf",
-      label: "View Slides",
+      label: "View slides",
     },
   },
 
-   {
-    id: "nc3-retreat2023-poster",
-    title: "Estimating among individual variation in reaction norms: a meta-analytical approach",
-    abstract: "Individual differences in animal behavior and physiology are important drivers of ecological and evolutionary processes. Variation in reaction norms, which describes how traits change in response to environmental variation for a given genotype, is a key aspect of these individual differences. While many studies use mixed-effects modeling to account for individual variation in reaction norms, fewhave quantified the magnitude of this variation. As such, the prevalance and magnitude of among-individual variation in reaction norms is not well-understood. We estimate the contribution of among-individual variation to total phenotypic variation and explore how accounting for this variation changes our inferences about population-level effects. We test the prediction that it explains only a small part of the total phenotypic variation in wild populations. We first systematically searched for studies using random-slope mixed-effects models to study phenotypic traits in non-human, non-inbred organisms, in the field or brought to controlled lab settings. Our analytical approach then builds on recent methodological advances that allow us to reanalyse published open datasets and integrate them using meta-analysis. The systematic literature search yielded 1765 unique references, out of which, 1196 passed the title-and-abstract screening, but only 170 provided open data and could then be reanalysed. Our results will provide a comprehensive and rigorous synthesis of the current state of knowledge on individual variation in reaction norms across species. These findings will be key to understand individuality, and thus, particularly important for the fields of animal personality and plasticity.",
-    event: "Joint Graduate Meeting of the Ethological Society and the Behavioral Biology Section of the DZG",
+  {
+    id: "dzg-2023-poster",
+    title:
+      "Estimating among individual variation in reaction norms: a meta-analytical approach",
+    abstract:
+      "Individual differences in animal behavior and physiology are important drivers of ecological and evolutionary processes. Variation in reaction norms, which describes how traits change in response to environmental variation for a given genotype, is a key aspect of these individual differences. While many studies use mixed-effects modeling to account for individual variation in reaction norms, few have quantified the magnitude of this variation. As such, the prevalance and magnitude of among-individual variation in reaction norms is not well-understood. We estimate the contribution of among-individual variation to total phenotypic variation and explore how accounting for this variation changes our inferences about population-level effects. We test the prediction that it explains only a small part of the total phenotypic variation in wild populations. We first systematically searched for studies using random-slope mixed-effects models to study phenotypic traits in non-human, non-inbred organisms, in the field or brought to controlled lab settings. Our analytical approach then builds on recent methodological advances that allow us to reanalyse published open datasets and integrate them using meta-analysis. The systematic literature search yielded 1765 unique references, out of which, 1196 passed the title-and-abstract screening, but only 170 provided open data and could then be reanalysed. Our results will provide a comprehensive and rigorous synthesis of the current state of knowledge on individual variation in reaction norms across species. These findings will be key to understand individuality, and thus, particularly important for the fields of animal personality and plasticity.",
+    event:
+      "Joint Graduate Meeting of the Ethological Society and the Behavioral Biology Section of the DZG",
     type: "poster",
     date: new Date("2023-11-10"),
     location: "Bielefeld, Germany",
-    presenterImage: "/src/assets/images/DZG-GraduateMeet2023-people.jpg",
+    presenterImage: DZGGraduateMeet2023Image.src,
     file: {
-      src: "/src/assets/conferences/nc3-retreat2023-poster.pdf",
+      src: Nc3Retreat2023PosterPdf,
       kind: "pdf",
-      label: "View Poster",
+      label: "View poster",
     },
   },
 
@@ -63,11 +73,12 @@ export const conferences: Conference[] = [
     date: new Date("2023-08-22"),
     location: "Dörentrup, Germany",
     file: {
-      src: "/src/assets/conferences/nc3-retreat2023-poster.pdf",
+      src: Nc3Retreat2023PosterPdf,
       kind: "pdf",
-      label: "View Poster",
+      label: "View poster",
     },
   },
+
   {
     id: "nc3-retreat2022-poster",
     title: "Estimating among individual variation in reaction norms",
@@ -76,9 +87,9 @@ export const conferences: Conference[] = [
     date: new Date("2022-08-29"),
     location: "Hoherodskopf, Germany",
     file: {
-      src: "/src/assets/conferences/nc3-retreat2022-poster.pdf",
+      src: Nc3Retreat2022PosterPdf,
       kind: "pdf",
-      label: "View Poster",
+      label: "View poster",
     },
   },
   // add more here...
