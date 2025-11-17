@@ -5,6 +5,61 @@ import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import Flipbook from "../components/Flipbook.astro";
+
+// Images for pandemic doodles
+const pandemicArt = [
+  {
+    src: "/src/assets/art/pandemic1.PNG",
+    caption: "I might be turning into a house plant slowly.",
+  },
+  {
+    src: "/src/assets/art/pandemic2.PNG",
+    caption: "I have joined forces with my phone to master unproductiveness.",
+  },
+  {
+    src: "/src/assets/art/pandemic3.PNG",
+    caption:
+      "Staring at an empty fridge for hours is a new skill I can put on my CV now.",
+  },
+  {
+    src: "/src/assets/art/pandemic4.PNG",
+    caption:
+      "I am maintaining strict personal hygeine, cleaning my insides with chai and biscuits.",
+  },
+  {
+    src: "/src/assets/art/pandemic5.PNG",
+    caption:
+      "I WFH, it involves looking for animals to observe their behaviour.",
+  },
+  {
+    src: "/src/assets/art/pandemic6.PNG",
+    caption:
+      "I can see the importance of enrichment in captive environment, waiting to be taken out for a walk.",
+  },
+  {
+    src: "/src/assets/art/pandemic7.PNG",
+    caption:
+      "Mera Ae Charkha Naulakha Kudey, Translation: My spinning wheel darling, is priceless.",
+  },
+  {
+    src: "/src/assets/art/pandemic8.PNG",
+    caption: "I have started to doodle, quite literally.",
+  },
+  {
+    src: "/src/assets/art/pandemic9.PNG",
+    caption:
+      "The dinosaurs have become quite feareless, they are taking over my balcony.",
+  },
+  {
+    src: "/src/assets/art/pandemic10.PNG",
+    caption: "A sketch over an image I took over a frozen pond in my garden.",
+  },
+  {
+    src: "/src/assets/art/pandemic11.PNG",
+    caption:
+      "Saw some incredibly happy puppies make road their playground today. It made me happy, I hope it makes your heart happy too.",
+  },
+];
 ---
 
 <Layout>
@@ -26,6 +81,9 @@ import Flipbook from "../components/Flipbook.astro";
     </div>
   </section>
 
+
+    <header class="relative border-b-3 p-5 overflow-hidden"></header>
+    
   <!-- Magazines -->
   <section class="pb-20 relative">
     <div class="max-w-5xl mx-auto p-5 pt-10 md:pt-10">
@@ -151,5 +209,206 @@ import Flipbook from "../components/Flipbook.astro";
     </div>
   </section>
 
+
+  <header class="relative border-b-3 p-5 overflow-hidden"></header>
+
+  <!--Project PANDEMIC ART -->
+  <section class="pb-25 relative">
+    <div class="max-w-5xl mx-auto p-5 pt-10 md:pt-10">
+      <h2 class="text-4xl font-semibold mb-8">Pandemic Doodles</h2>
+      <p class="mb-8 max-w-5xl">
+        <span class="font-semibold">
+          Covid-2019 Pandemic was a difficult time in many ways for everyone. I
+          spent months locked up in my house, unable to go out and do much. To
+          keep myself occupied, I started doodling about my boredom and my
+          little observations of the world around me. It kept my boredom low and
+          my spirits high. Here are some of those doodles that I made during
+          that time. Enjoy!
+        </span>
+      </p>
+
+      <!-- Image carousel -->
+      <div class="relative">
+        <!-- Left arrow -->
+        <button
+          type="button"
+          class="flex items-center justify-center w-9 h-9 md:w-10
+  md:h-10 rounded-full bg-white/80 shadow
+  border border-slate-300 absolute left-0 top-1/2
+  -translate-y-1/2 -translate-x-1/2 hover:bg-white
+  transition z-10"
+          data-carousel="pandemic"
+          data-dir="prev"
+          aria-label="Previous doodles"
+        >
+          ‹
+        </button>
+
+        <!-- Scrollable track -->
+        <div
+          id="pandemic-carousel"
+          class="flex gap-2 overflow-x-auto scroll-smooth snap-4x snap-mandatory pb-4"
+        >
+          {
+            pandemicArt.map((item, index) => (
+              <button
+                type="button"
+                class="snap-start shrink-0 w-64 h-64 md:w-72 md:h-72 
+                rounded-2xl bg-slate-100 overflow-hidden 
+                border border-slate-300 focus:outline-none 
+                focus:ring-2 focus:ring-offset-2 
+                focus:ring-slate-500"
+                data-pandemic-image
+                data-fullsrc={item.src}
+                data-caption={item.caption}
+                data-index={index}
+              >
+                <img
+                  src={item.src}
+                  alt={`Pandemic doodle ${index + 1}`}
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </button>
+            ))
+          }
+        </div>
+
+        <!-- Right arrow -->
+        <button
+          type="button"
+          class="flex items-center justify-center
+  w-9 h-9 md:w-10 md:h-10 rounded-full bg-white/80
+  shadow border border-slate-300 absolute right-0 top-1/2
+  -translate-y-1/2 translate-x-1/2 hover:bg-white
+  transition z-10"
+          data-carousel="pandemic"
+          data-dir="next"
+          aria-label="Next doodles"
+        >
+          ›
+        </button>
+      </div>
+    </div>
+
+    <!-- Lightbox modal -->
+    <div
+      id="pandemic-modal"
+      class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70"
+      aria-hidden="true"
+    >
+      <div class="relative max-w-3xl mx-auto p-4 md:p-6 w-full">
+        <!-- Clickable backdrop area outside card (handled in JS as well) -->
+        <button
+          type="button"
+          id="pandemic-modal-backdrop"
+          class="absolute inset-0 w-full h-full cursor-default"
+          aria-hidden="true"></button>
+
+        <div class="relative bg-white rounded-4xl shadow-xl overflow-hidden">
+          <button
+            type="button"
+            id="pandemic-modal-close"
+            class="absolute top-3 right-3 inline-flex items-center 
+            justify-center w-6 h-6 rounded-full 
+            bg-white/90 border border-slate-200 
+            text-slate-700 hover:bg-white 
+            hover:text-slate-900 shadow"
+            aria-label="Close image"
+          >
+            ✕
+          </button>
+
+          <figure class="flex flex-col">
+            <img
+              id="pandemic-modal-image"
+              src=""
+              alt=""
+              class="w-full max-h-[70vh] object-contain bg-slate-100"
+              loading="lazy"
+            />
+            <figcaption
+              id="pandemic-modal-caption"
+              class="p-4 text-slate-700 text-sm md:text-base"
+            >
+              <!-- caption will be injected via JS -->
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <script is:inline>
+      // Carousel arrows
+      const container = document.querySelector("#pandemic-carousel");
+      const buttons = document.querySelectorAll('[data-carousel="pandemic"]');
+
+      if (container && buttons.length) {
+        const getStep = () => {
+          const firstCard = container.querySelector("[data-pandemic-image]");
+          return (
+            firstCard?.getBoundingClientRect().width ||
+            container.clientWidth * 0.8
+          );
+        };
+
+        buttons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const dir = btn.dataset.dir === "next" ? 1 : -1;
+            const step = getStep();
+            container.scrollBy({
+              left: dir * step,
+              behavior: "smooth",
+            });
+          });
+        });
+      }
+
+      // Lightbox / modal
+      const imageButtons = document.querySelectorAll("[data-pandemic-image]");
+      const modal = document.querySelector("#pandemic-modal");
+      const modalImg = document.querySelector("#pandemic-modal-image");
+      const modalCaption = document.querySelector("#pandemic-modal-caption");
+      const modalClose = document.querySelector("#pandemic-modal-close");
+      const modalBackdrop = document.querySelector("#pandemic-modal-backdrop");
+
+      const openModal = (src, caption, alt) => {
+        if (!modal || !modalImg || !modalCaption) return;
+        modalImg.src = src;
+        modalImg.alt = alt;
+        modalCaption.textContent = caption || "";
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        document.body.style.overflow = "hidden";
+      };
+
+      const closeModal = () => {
+        if (!modal || !modalImg) return;
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+        modalImg.src = "";
+        document.body.style.overflow = "";
+      };
+
+      imageButtons.forEach((btn, index) => {
+        btn.addEventListener("click", () => {
+          const src = btn.dataset.fullsrc || "";
+          const caption = btn.dataset.caption || "";
+          const alt = `Pandemic doodle ${index + 1}`;
+          openModal(src, caption, alt);
+        });
+      });
+
+      modalClose?.addEventListener("click", closeModal);
+      modalBackdrop?.addEventListener("click", closeModal);
+
+      // Close on Escape
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeModal();
+        }
+      });
+    </script>
+  </section>
   <Footer />
 </Layout>

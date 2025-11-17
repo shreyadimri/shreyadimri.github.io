@@ -1,31 +1,432 @@
 ---
-const pageTitle = "Engagements";
+const pageTitle = "Talks & Workshops";
 import "../styles/global.css";
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import { conferences } from "../data/conferences";
+import { workshops } from "../data/workshops";
+import type { ConferenceType } from "../data/conferences";
+
+// Sort conferences by date (latest first)
+const conferenceItems = [...conferences].sort(
+  (a, b) => b.date.getTime() - a.date.getTime()
+);
+
+// Sort workshops by date (latest first)
+const workshopItems = [...workshops].sort(
+  (a, b) => b.date.getTime() - a.date.getTime()
+);
+
+function formatDate(date: Date): string {
+  // e.g. "30 Aug 2025"
+  return date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+function typeLabel(type: ConferenceType): string {
+  return type === "talk" ? "Talk" : "Poster";
+}
 ---
+
 <Layout>
   <Header />
 
-  <!-- Page title / intro -->
+  <!-- Intro / page heading -->
   <section class="pb-10 relative">
-    <div class="max-w-5xl mx-auto p-2 pt-20 md:pt-20">
-      <h1 class="text-5xl md:text-5xl font-black mb-4">Conference presentations</h1>
-    </div>
-  </section>
-
-  <!-- CONTENT WOULD GO HERE -->
-
-
-    <section class="pb-10 relative">
     <div class="max-w-5xl mx-auto p-5 pt-20 md:pt-20">
-      <h1 class="text-5xl md:text-5xl font-black mb-4">Workshops</h1>
+      <h1 class="text-5xl md:text-5xl font-black mb-5">
+        Conference presentations &amp; workshops
+      </h1>
+      <p class="text-xl font-medium max-w-5xl">
+        All the talks, posters, and workshops I’ve given over the years. I have
+        tried to keep the associated materials openly available where possible.
+        I really enjoy sharing my work and engaging with others, so if you would
+        like to connect about it, please reach out!
+      </p>
     </div>
   </section>
 
-   <!-- CONTENT WOULD GO HERE -->
+  <!-- Divider -->
+  <header class="relative border-b-3 p-5 overflow-hidden"></header>
+
+  <!-- Workshops-->
+  <section class="pb-16 relative">
+    <div class="max-w-5xl mx-auto p-5 pt-10 md:pt-10">
+      <h2 class="text-4xl font-semibold mb-6">Workshops</h2>
+      <p class="mb-8 max-w-5xl">
+        Workshops have become one of the most enjoyable parts of my engagements. Here is a list of all the workshops I have conducted. Please click on them to see more details or materials.
+        <br><br>
+        The best part of workshops is the interaction and questions from participants, which never fails to push me to think about something new!
+      </p>
+
+      <ul class="space-y-8">
+        {
+          workshopItems.map((ws) => (
+            <li>
+              <button
+                type="button"
+                class="w-full text-left bg-white p-5 border-2 mb-2 
+                transition-all duration-200 hover:shadow-[4px_4px_0px_rgba(0,0,0,0.3)] 
+                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500"
+                data-conf-card
+                data-title={ws.title}
+                data-event={ws.event}
+                data-type-label="Workshop"
+                data-date-label={formatDate(ws.date)}
+                data-location={ws.location}
+                data-session={ws.role}
+                data-abstract={ws.description}
+                data-file-src={ws.materials?.src || ""}
+                data-file-kind={ws.materials?.kind || ""}
+                data-presenter-image={ws.presenterImage}
+              >
+                <div class="flex gap-4 items-start">
+                  {ws.presenterImage && (
+                    <div class="flex-shrink-0">
+                      <img
+                        src={ws.presenterImage}
+                        alt={`Presenter photo for ${ws.title}`}
+                        class="rounded-xl object-contain max-w-[220px] md:max-w-[280px] h-auto"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
+
+                  <div class="flex-1">
+                    <p class="text-sm text-slate-600 mb-1">
+                      <span class="font-semibold uppercase tracking-wide">
+                        Workshop
+                      </span>
+                      {" · "}
+                      {ws.event}
+                      {ws.location ? ` · ${ws.location}` : ""}
+                      {" · "}
+                      {formatDate(ws.date)}
+                      {ws.duration ? ` · ${ws.duration}` : ""}
+                    </p>
+
+                    {ws.role && (
+                      <p class="text-xs text-slate-500 mb-1">
+                        {ws.role}
+                      </p>
+                    )}
+
+                    <p class="text-lg font-semibold mb-2">
+                      {ws.title}
+                    </p>
+
+                    {ws.description && (
+                      <p
+                        class="text-sm text-slate-700 line-clamp-3 mb-3"
+                        set:html={ws.description}
+                      />
+                    )}
+                  </div>
+                </div>
+              </button>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Divider -->
+  <header class="relative border-b-3 p-5 overflow-hidden"></header>
+
+  <!-- Talks & Posters -->
+  <section class="pb-20 relative">
+    <div class="max-w-5xl mx-auto p-5 pt-10 md:pt-10">
+      <h2 class="text-4xl font-semibold mb-6">Talks and Posters</h2>
+      <p class="mb-8 max-w-5xl text-slate-700">
+        Here are the talks and posters I’ve presented at conferences and
+        scientific meetings. Please click on a card to see the slides or
+        posters.
+      </p>
+
+      <ul class="space-y-8">
+        {
+          conferenceItems.map((conf) => (
+            <li>
+              <!-- Whole card is clickable to open modal -->
+              <button
+                type="button"
+                class="w-full text-left bg-white p-5 border-2 mb-2 
+                transition-all duration-200 hover:shadow-[4px_4px_0px_rgba(0,0,0,0.3)] 
+                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500"
+                data-conf-card
+                data-title={conf.title}
+                data-event={conf.event}
+                data-type-label={typeLabel(conf.type)}
+                data-date-label={formatDate(conf.date)}
+                data-location={conf.location}
+                data-session={conf.session}
+                data-abstract={conf.abstract}
+                data-file-src={conf.file.src}
+                data-file-kind={conf.file.kind}
+                data-presenter-image={conf.presenterImage}
+              >
+                <div class="flex gap-4 items-start">
+                  {conf.presenterImage && (
+                    <div class="flex-shrink-0">
+                      <img
+                        src={conf.presenterImage}
+                        alt={`Presenter photo for ${conf.title}`}
+                        class="rounded-xl object-contain max-w-[220px] md:max-w-[280px] h-38"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
+                  <div class="flex-1">
+                    <p class="text-sm text-slate-600 mb-1">
+                      <span class="font-semibold uppercase tracking-wide">
+                        {typeLabel(conf.type)}
+                      </span>
+                      {" · "}
+                      {conf.event}
+                      {conf.location ? ` · ${conf.location}` : ""}
+                      {" · "}
+                      {formatDate(conf.date)}
+                    </p>
+
+                    {conf.session && (
+                      <p class="text-xs text-slate-500 mb-1">
+                        {conf.session}
+                      </p>
+                    )}
+
+                    <p class="text-lg font-semibold mb-2">
+                      {conf.title}
+                    </p>
+
+                    {conf.abstract && (
+                      <p class="text-sm text-slate-700 line-clamp-3 mb-3">
+                        {conf.abstract}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </button>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- POPUP for talks, posters & workshops -->
+  <div
+    id="conf-modal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70"
+    aria-hidden="true"
+  >
+    <div
+      class="relative w-[98vw] max-w-[1400px] h-[92vh] mx-auto p-4"
+    >
+      <!-- Backdrop click area -->
+      <button
+        type="button"
+        id="conf-modal-backdrop"
+        class="absolute inset-0 w-full h-full cursor-default"
+        aria-hidden="true"
+      ></button>
+
+      <div
+        class="relative bg-white rounded-3xl shadow-xl overflow-hidden h-full flex flex-col"
+      >
+        <button
+          type="button"
+          id="conf-modal-close"
+          class="absolute top-3 right-3 inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/90 border border-slate-200 text-slate-700 hover:bg-white hover:text-slate-900 shadow z-10"
+          aria-label="Close"
+        >
+          ✕
+        </button>
+
+        <div class="p-4 md:p-5 flex flex-col gap-3 h-full">
+          <div class="flex flex-col md:flex-row gap-4 md:items-start flex-shrink-0">
+            <div class="flex-1">
+              <h3
+                id="conf-modal-title"
+                class="text-xl md:text-2xl font-semibold mb-1"
+              ></h3>
+              <p
+                id="conf-modal-meta"
+                class="text-sm md:text-sm text-slate-600 mb-1"
+              ></p>
+              <p
+                id="conf-modal-session"
+                class="text-xs md:text-sm text-slate-500 mb-2"
+              ></p>
+            </div>
+
+            <!-- Presenter image in modal (optional) -->
+            <div class="flex-shrink-0">
+              <img
+                id="conf-modal-presenter"
+                src=""
+                alt="Presenter photo"
+                class="hidden rounded-xl object-contain w-auto h-60 max-w-[420px] mx-auto"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+          <p
+            id="conf-modal-abstract"
+            class="text-sm md:text-base text-slate-700 mb-2 flex-shrink-0"
+          ></p>
+
+          <div class="flex-1 min-h-0">
+            <!-- Image version -->
+            <img
+              id="conf-modal-image"
+              src=""
+              alt=""
+              class="hidden w-full h-full max-h-full object-contain bg-slate-100"
+              loading="lazy"
+            />
+
+            <!-- PDF / slide deck version -->
+            <iframe
+              id="conf-modal-iframe"
+              src=""
+              title="Conference file"
+              class="hidden w-full h-full border-0 bg-slate-100"
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT: open/close modal + load image/pdf -->
+  <script is:inline>
+    const cards = document.querySelectorAll("[data-conf-card]");
+    const modal = document.querySelector("#conf-modal");
+    const modalBackdrop = document.querySelector("#conf-modal-backdrop");
+    const modalClose = document.querySelector("#conf-modal-close");
+    const modalTitle = document.querySelector("#conf-modal-title");
+    const modalMeta = document.querySelector("#conf-modal-meta");
+    const modalSession = document.querySelector("#conf-modal-session");
+    const modalAbstract = document.querySelector("#conf-modal-abstract");
+    const modalImage = document.querySelector("#conf-modal-image");
+    const modalIframe = document.querySelector("#conf-modal-iframe");
+    const modalPresenter = document.querySelector("#conf-modal-presenter");
+
+    const openModal = (data) => {
+      if (
+        !modal ||
+        !modalTitle ||
+        !modalMeta ||
+        !modalSession ||
+        !modalAbstract ||
+        !modalImage ||
+        !modalIframe ||
+        !modalPresenter
+      ) {
+        return;
+      }
+
+      const {
+        title,
+        event,
+        typeLabel,
+        dateLabel,
+        location,
+        session,
+        abstract,
+        fileSrc,
+        fileKind,
+        presenterImage,
+      } = data;
+
+      modalTitle.textContent = title || "";
+
+      const metaParts = [];
+      if (typeLabel) metaParts.push(typeLabel);
+      if (event) metaParts.push(event);
+      if (location) metaParts.push(location);
+      if (dateLabel) metaParts.push(dateLabel);
+      modalMeta.textContent = metaParts.join(" · ");
+
+      modalSession.textContent = session || "";
+
+      // Allow HTML (for clickable links in workshop descriptions)
+      modalAbstract.innerHTML = abstract || "";
+
+      // Presenter image
+      modalPresenter.classList.add("hidden");
+      modalPresenter.src = "";
+      if (presenterImage) {
+        modalPresenter.src = presenterImage;
+        modalPresenter.alt = title
+          ? `Presenter photo for ${title}`
+          : "Presenter photo";
+        modalPresenter.classList.remove("hidden");
+      }
+
+      // Reset views
+      modalImage.classList.add("hidden");
+      modalIframe.classList.add("hidden");
+      modalImage.src = "";
+      modalIframe.src = "";
+
+      if (fileKind === "image") {
+        modalImage.src = fileSrc;
+        modalImage.alt = title || "Conference poster";
+        modalImage.classList.remove("hidden");
+      } else if (fileKind === "pdf" && fileSrc) {
+        modalIframe.src = fileSrc;
+        modalIframe.classList.remove("hidden");
+      }
+
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      document.body.style.overflow = "hidden";
+    };
+
+    const closeModal = () => {
+      if (!modal || !modalImage || !modalIframe) return;
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+      modalImage.src = "";
+      modalIframe.src = "";
+      document.body.style.overflow = "";
+    };
+
+    cards.forEach((card) => {
+      card.addEventListener("click", () => {
+        const data = {
+          title: card.dataset.title || "",
+          event: card.dataset.event || "",
+          typeLabel: card.dataset.typeLabel || "",
+          dateLabel: card.dataset.dateLabel || "",
+          location: card.dataset.location || "",
+          session: card.dataset.session || "",
+          abstract: card.dataset.abstract || "",
+          fileSrc: card.dataset.fileSrc || "",
+          fileKind: card.dataset.fileKind || "",
+          presenterImage: card.dataset.presenterImage || "",
+        };
+        openModal(data);
+      });
+    });
+
+    modalClose?.addEventListener("click", closeModal);
+    modalBackdrop?.addEventListener("click", closeModal);
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeModal();
+      }
+    });
+  </script>
 
   <Footer />
 </Layout>
-

@@ -21,6 +21,7 @@ const DESKTOP_GUTTER = 100;
 const MIN_DESKTOP_PAGE_WIDTH = 360;
 const DIALOG_HORIZONTAL_PADDING = 20;
 const DIALOG_VERTICAL_PADDING = 40;
+const NAV_HEIGHT = 56; // reserve vertical space for top nav
 
 /** Modern circular glass arrow button — smaller + #fffbc7 */
 const ModernArrowButton = ({
@@ -80,9 +81,7 @@ const ModernArrowButton = ({
         justifyContent: "center",
         cursor: disabled ? "default" : "pointer",
         transition: "0.25s ease",
-        boxShadow: disabled
-          ? "none"
-          : "0 3px 12px rgba(0, 0, 0, 0.25)",
+        boxShadow: disabled ? "none" : "0 3px 12px rgba(0, 0, 0, 0.25)",
       }}
       onMouseEnter={(e) => {
         if (disabled) return;
@@ -200,7 +199,7 @@ export default function PdfFlipbook({
   );
   const fallbackAvailableHeight = Math.max(
     0,
-    dialogHeightPx - DIALOG_VERTICAL_PADDING
+    dialogHeightPx - DIALOG_VERTICAL_PADDING - NAV_HEIGHT
   );
 
   const measuredAvailableWidth =
@@ -209,7 +208,7 @@ export default function PdfFlipbook({
       : null;
   const measuredAvailableHeight =
     containerSize.height !== null
-      ? Math.max(0, containerSize.height - DIALOG_VERTICAL_PADDING)
+      ? Math.max(0, containerSize.height - DIALOG_VERTICAL_PADDING - NAV_HEIGHT)
       : null;
 
   const availableWidth =
@@ -228,6 +227,7 @@ export default function PdfFlipbook({
   const isDesktopLayout = availableWidth >= desktopThreshold;
 
   const aspectRatio = width > 0 ? height / width : 1.5;
+
   const fitWithinBounds = (
     maxWidth: number,
     maxHeight: number
@@ -347,7 +347,8 @@ export default function PdfFlipbook({
               <span
                 style={{
                   color: "#fffbc7",
-                  fontFamily: '"Space Grotesk Variable", system-ui, sans-serif',
+                  fontFamily:
+                    '"Space Grotesk Variable", system-ui, sans-serif',
                   fontWeight: 300,
                   letterSpacing: "0.01em",
                   fontSize: "0.85rem",
@@ -491,20 +492,20 @@ export default function PdfFlipbook({
 }
 
 const styles = {
-  trigger: {
-    background: "#f1b1b0",
-    color: "#000",
-    fontSize: "1rem",
-    fontWeight: 500,
-    height: "48px",
-    padding: "0 24px",
-    borderRadius: "9999px",
-    border: "3px solid #000",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    cursor: "pointer",
-    transition: "all 0.25s ease",
+  trigger: { 
+    background: "#f1b1b0", 
+    color: "#000", 
+    fontSize: "1rem", 
+    fontWeight: 500, 
+    height: "48px", 
+    padding: "0 24px", 
+    borderRadius: "9999px", 
+    border: "3px solid #000", 
+    display: "flex", 
+    alignItems: "center", 
+    justifyContent: "center", 
+    cursor: "pointer", 
+    transition: "all 0.25s ease", 
   },
   modal: {
     position: "fixed" as const,
@@ -543,9 +544,9 @@ const styles = {
     marginTop: "1.5rem",
     display: "flex",
     flexDirection: "column" as const,
-    justifyContent: "center",
+    justifyContent: "flex-start", // was center
     alignItems: "center",
-    overflow: "hidden",
+    overflow: "auto", // was hidden: allow scroll if needed
     width: "100%",
     height: "100%",
   },
@@ -561,6 +562,7 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
+    maxHeight: "100%",
   },
   desktopWrapper: {
     display: "flex",
@@ -568,5 +570,6 @@ const styles = {
     alignItems: "center",
     gap: "1rem",
     width: "100%",
+    maxHeight: "100%",
   },
 };
