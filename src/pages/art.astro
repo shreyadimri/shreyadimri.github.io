@@ -6,61 +6,75 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import Flipbook from "../components/Flipbook.astro";
 
+// Import images so Astro can build proper URLs
+import Pandemic1 from "../assets/art/pandemic1.png";
+import Pandemic2 from "../assets/art/pandemic2.png";
+import Pandemic3 from "../assets/art/pandemic3.png";
+import Pandemic4 from "../assets/art/pandemic4.png";
+import Pandemic5 from "../assets/art/pandemic5.png";
+import Pandemic6 from "../assets/art/pandemic6.png";
+import Pandemic7 from "../assets/art/pandemic7.png";
+import Pandemic8 from "../assets/art/pandemic8.png";
+import Pandemic9 from "../assets/art/pandemic9.png";
+import Pandemic10 from "../assets/art/pandemic10.png";
+import Pandemic11 from "../assets/art/pandemic11.png";
+
 // Images for pandemic doodles
 const pandemicArt = [
   {
-    src: "/src/assets/art/pandemic1.PNG",
+    src: Pandemic1.src,
     caption: "I might be turning into a house plant slowly.",
   },
   {
-    src: "/src/assets/art/pandemic2.PNG",
+    src: Pandemic2.src,
     caption: "I have joined forces with my phone to master unproductiveness.",
   },
   {
-    src: "/src/assets/art/pandemic3.PNG",
+    src: Pandemic3.src,
     caption:
       "Staring at an empty fridge for hours is a new skill I can put on my CV now.",
   },
   {
-    src: "/src/assets/art/pandemic4.PNG",
+    src: Pandemic4.src,
     caption:
       "I am maintaining strict personal hygeine, cleaning my insides with chai and biscuits.",
   },
   {
-    src: "/src/assets/art/pandemic5.PNG",
+    src: Pandemic5.src,
     caption:
       "I WFH, it involves looking for animals to observe their behaviour.",
   },
   {
-    src: "/src/assets/art/pandemic6.PNG",
+    src: Pandemic6.src,
     caption:
       "I can see the importance of enrichment in captive environment, waiting to be taken out for a walk.",
   },
   {
-    src: "/src/assets/art/pandemic7.PNG",
+    src: Pandemic7.src,
     caption:
       "Mera Ae Charkha Naulakha Kudey, Translation: My spinning wheel darling, is priceless.",
   },
   {
-    src: "/src/assets/art/pandemic8.PNG",
+    src: Pandemic8.src,
     caption: "I have started to doodle, quite literally.",
   },
   {
-    src: "/src/assets/art/pandemic9.PNG",
+    src: Pandemic9.src,
     caption:
       "The dinosaurs have become quite feareless, they are taking over my balcony.",
   },
   {
-    src: "/src/assets/art/pandemic10.PNG",
+    src: Pandemic10.src,
     caption: "A sketch over an image I took over a frozen pond in my garden.",
   },
   {
-    src: "/src/assets/art/pandemic11.PNG",
+    src: Pandemic11.src,
     caption:
       "Saw some incredibly happy puppies make road their playground today. It made me happy, I hope it makes your heart happy too.",
   },
 ];
 ---
+
 
 <Layout>
   <Header />

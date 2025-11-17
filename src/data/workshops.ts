@@ -31,24 +31,7 @@ export const workshops: Workshop[] = [
       We will begin with a detailed overview of the systematic review approach, focusing on question formation, systematic searching and study screening. Next, we will focus on the meta-analytic process, specifically on effect size choice, data extraction, data analysis, and importantly, result interpretation. We will make use of multilevel meta-analysis and meta-regression, with an introduction on how to account for phylogeny when multiple species are synthesised. Since meta-analytic results cannot be interpreted without a deep understanding of heterogeneity and publication bias, we will cover in detail how to estimate, adjust for, and interpret heterogeneity and publication bias.
       <br><br>
       This course will include a mix of lectures and hands-on exercises using real meta-analytic datasets. The emphasis throughout the course is on the application of the various methods and the interpretation of the results using the free software R and the R packages ‘metafor’ (Viechtbauer 2010) and ‘orchaRd’ (Nakagawa et al. 2023). The course will follow the principles of open science, with a strong focus on the importance of adhering to preferred reporting items for systematic reviews and meta-analyses in ecology and evolutionary biology (PRISMA EcoEvo; O’Dea et al. 2021). Throughout, we will consider examples of how to interpret results and present them using tables and data visualization, and for each step, we will provide literature and practical resources (e.g., R scripts).
-      <br><br>
-      <strong>Program</strong>
-      <br><br>
-      <strong>Monday – Classes from 13:00–17:00 CET</strong><br>
-      Lectures and exercises on question formation and how to perform literature searches for scientific literature, including grey literature, in search platforms such as Web of Science, Scopus and PubMed.
-      <br><br>
-      <strong>Tuesday – Classes from 13:00–17:00 CET</strong><br>
-      Lectures and exercises on title-and-abstract and full-text screening, including the use of decision trees to increase inter-observer agreement and reproducibility, and an introduction to Risk of Bias assessments.
-      <br><br>
-      <strong>Wednesday – Classes from 13:00–17:00 CET</strong><br>
-      Lectures and exercises on effect size choice, data extraction and data analysis (meta-analysis and meta-regression). The focus will be on the meta-analysis of correlations (r, Zr) and mean differences (lnRR, SMD), but we will also introduce the meta-analysis of variance (lnCVR, lnVR) and other less commonly used effect sizes in ecology and evolution.
-      <br><br>
-      <strong>Thursday – Classes from 13:00–17:00 CET</strong><br>
-      Lectures and exercises on data analysis (continuation), heterogeneity and publication bias with a focus on how to estimate heterogeneity using a pluralistic approach, the importance of prediction intervals, and how to test for and adjust for publication bias (e.g., small-study and decline effects) using multilevel meta-regressions.
-      <br><br>
-      <strong>Friday – Classes from 13:00–17:00 CET</strong><br>
-      Lectures, exercises and discussion on result interpretation, followed by a Q&A session (including about your own ongoing evidence synthesis projects, so bring them along).
-      <br><br><br>
+      <br>
       More details about the workshop can be found here:
       <a href="https://www.physalia-courses.org/courses-workshops/metain-r/" 
          target="_blank" 
