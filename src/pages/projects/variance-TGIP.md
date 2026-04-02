@@ -4,7 +4,7 @@ title: "Parental Immune Priming shapes variation in offspring traits"
 author:
   name: "Shreya Dimri"
 image:
-  url: "/public/variance-TGIP.png"
+  url: "/variance-TGIP.png"
 tags: ["Current Project"]
 pubDate: "April 01, 2026"
 ---
