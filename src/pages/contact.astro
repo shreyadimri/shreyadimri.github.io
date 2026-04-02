@@ -1,0 +1,67 @@
+---
+const pageTitle = "Art";
+import "../styles/global.css";
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+
+const email_temp = 'shreya.dimri@uni-bielefeld.de';
+const email_perm = 'shreyadimriofficial@gmail.com';
+const location = 'Univeristy of Bielefeld, Germany';
+---
+
+<Layout title={pageTitle}>
+  <Header />
+
+   <!-- Intro -->
+  <section class="pb-10 relative">
+    <div class="max-w-3xl mx-auto p-5 pt-20 md:pt-20">
+      <h1 class="text-3xl font-black mb-5">Get in Touch</h1>
+      <p class="text-xl font-medium text-slate-800">
+        <br /><br />
+        Whether you want to discuss a potential project, ask a question, or just say hello, I’m always open to connecting. I look forward to hearing from you!
+      </p>
+    </div>
+  </section>
+  <section class="pb-20 relative">
+    <div class="max-w-3xl mx-auto p-5 pt-10 md:pt-10">
+      <h2 class="text-2xl font-semibold mb-8">Contact details</h2>
+      <p class="mb-8 max-w-5xl">
+  <main class="contact-page">
+    <section class="contact-hero">
+      
+      <h1></h1>
+      <p>
+        
+      </p>
+    </section>
+      <aside class="contact-card contact-info-card">
+        <h2></h2>
+        <p>You can also reach out directly using the details below. <br /><br /></p>
+
+        <div class="contact-info-list">
+          <div class="contact-info-item">
+            <strong>Email</strong>
+            <a href={`mailto:${email_temp}`}>{email_temp}</a>
+          </div><br/>
+          <div class="contact-info-item">
+            <strong>Email </strong>
+            <a href={`mailto:${email_perm}`}>{email_perm}</a>
+          </div><br/>
+          <div class="contact-info-item">
+            <strong>Location</strong>
+            <span>{location}</span>
+          </div><br/>
+        </div>
+
+        <p class="contact-note">
+            I’m currently based in Germany, but I’m open to remote collaborations and opportunities worldwide!
+        </p>
+      </aside>
+    </section>
+  </main>
+
+
+    <Footer />
+</Layout>

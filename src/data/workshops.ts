@@ -3,6 +3,9 @@ import Behaviour2025Photo from "../assets/images/behaviour2025-SD2.jpg";
 import Behaviour2025Slides from "../assets/workshops/behaviour2025-workshop.pdf";
 import EcoOpen2025Photo from "../assets/images/ecoopen2025-SD.png";
 import EcoOpen2025Slides from "../assets/workshops/ecoopen2025-quarto-workshop.pdf";
+import LMW2026 from "../assets/images/LMW2026.png";
+import iDivScienceTBD from "../assets/images/scienceTBD.webp";
+import Quarto_iDiv from "../assets/workshops/Quarto_iDiv.pdf";
 
 export interface Workshop {
   id: string;
@@ -78,6 +81,67 @@ export const workshops: Workshop[] = [
     presenterImage: EcoOpen2025Photo.src,
     materials: {
       src: EcoOpen2025Slides,
+      kind: "pdf",
+      label: "Workshop slides",
+    },
+  },
+
+   {
+    id: "lovemethods2026",
+    title: "Avoiding common pitfalls for a reproducible systematic review and meta-analysis",
+    description:
+      `Conducting systematic reviews and meta-analyses that are both rigorous and reproducible requires careful planning, transparent reporting, and methodological awareness. In this 2-hour interactive virtual workshop, we will walk through frequent pitfalls in systematic reviews and meta-analyses, from unclear research questions and incomplete reporting to inconsistencies in data management, effect size coding, and reproducibility practices. Participants will learn practical strategies and tools to improve transparency, enhance reproducibility, and streamline their workflows. Whether you are planning your first systematic review and meta-analysis or refining your approach, this session will help you anticipate challenges and adopt best practices for robust evidence synthesis. 
+      <br>
+       If you are interested in watching this session, it is available on 
+      <a href="https://youtu.be/VXU8OAkadR4?si=txpdTBCZNqRFa7FP" 
+         target="_blank" 
+         rel="noopener noreferrer"
+         class="text-blue-700 underline underline-offset-2 hover:text-blue-900">
+         Youtube here
+      </a>
+      <br>
+       and second session on meta-analysis by Dr. Alfredo Sánchez-Tójar on
+      <a href="https://www.youtube.com/watch?v=zV2VeH0oxGA&t=362s" 
+         target="_blank" 
+         rel="noopener noreferrer"
+         class="text-blue-700 underline underline-offset-2 hover:text-blue-900">
+         Youtube here
+      </a>.
+    `,
+    event: "Love Methods Week 2026",
+    role: "Co-Instructor with Dr. Alfredo Sánchez-Tójar",
+    date: new Date("2026-01-21"),
+    duration: "2 hour",
+    location: "Online",
+    presenterImage: LMW2026.src,
+    materials: {
+      src: "https://osf.io/dfhz2/files/rwzxg",
+      kind: "pdf",
+      label: "Workshop slides",
+    },
+  },
+
+   {
+    id: "idiv2026-quarto",
+    title: "Reproducible Manuscripts with Quarto",
+    description:
+      `Transparency and reproducibility are essential to good research practice. Although replicating scientific findings can be challenging, achieving full computational reproducibility for the outputs reported in a manuscript, is both necessary and achievable. This workshop will introduce participants to creating a reproducible workflow for a publication-ready manuscript that integrates data, analyses, text, figures, and references. Using Quarto with R or Python, we will discuss what Quarto is, why it is useful, and how to organise a project for reproducible workflows. I will briefly cover Markdown, inline code, code chunks for figures and tables, managing references with Zotero or BibTeX, and rendering manuscripts to multiple formats. The session includes a presentation and short live demonstration. Participants familiar with R, Python and Markdown are encouraged to follow along using their own laptops with Quarto and RStudio installed. You can find the details about the workshop on the iDiv <a href="https://conference.idiv.de/event/4/contributions"class="text-blue-700 underline underline-offset-2 hover:text-blue-900">website here</a>.
+      <br>
+       If you are interested in working through the practical components of this session, you can find them on 
+      <a href="https://github.com/shreyadimri/Quarto-Workshop-Tutorial" 
+         target="_blank" 
+         rel="noopener noreferrer"
+         class="text-blue-700 underline underline-offset-2 hover:text-blue-900">
+         GitHub here
+      </a>`,
+    event: "Science: To Be Determined Symposium",
+    role: "Instructor",
+    date: new Date("2026-03-04"),
+    duration: "1.5 hour",
+    location: "German Centre for Integrative Biodiversity Research (iDiv), Leipzig, Germany",
+    presenterImage: iDivScienceTBD.src,
+    materials: {
+      src: Quarto_iDiv,
       kind: "pdf",
       label: "Workshop slides",
     },
